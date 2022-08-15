@@ -1,0 +1,38 @@
+version: '3'
+services:
+  server:
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - PORT=${PORT}
+    tty: true
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    restart: on-failure
+    volumes:
+      - .:/api
+    depends_on:
+      - postgresdb
+    networks:
+      - ecommerceapi
+
+  postgresdb:
+    image: postgres:alpine3.16
+    container_name: postgres_container
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - DATABASE_HOST=${DATABASE_HOST}
+    ports:
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+    networks:
+      - ecommerceapi
+
+networks:
+  ecommerceapi:
+    driver: bridge
