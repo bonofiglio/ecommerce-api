@@ -1,6 +1,8 @@
 version: '3'
 services:
   server:
+    profiles:
+      - default
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -21,6 +23,9 @@ services:
       - ecommerceapi
 
   postgresdb:
+    profiles:
+      - default
+      - db
     image: postgres:alpine3.16
     container_name: postgres_container
     environment:
