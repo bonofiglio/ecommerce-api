@@ -15,6 +15,12 @@ func initializeRoutes(app *echo.Echo, db *bun.DB) {
 	app.POST("/products", func(context echo.Context) error {
 		return products.IndexPOST(&context, db)
 	})
+	app.GET("/products/:id", func(context echo.Context) error {
+		return products.IdGET(&context, db)
+	})
+	app.PUT("/products/:id", func(context echo.Context) error {
+		return products.IdPUT(&context, db)
+	})
 }
 
 func InitializeServer(port *string, db *bun.DB) *echo.Echo {
