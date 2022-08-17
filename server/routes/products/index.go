@@ -8,7 +8,7 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func GET(c *echo.Context, db *bun.DB) error {
+func IndexGET(c *echo.Context, db *bun.DB) error {
 	ctx := (*c).Request().Context()
 
 	products := make([]map[string]interface{}, 0)
@@ -21,7 +21,7 @@ func GET(c *echo.Context, db *bun.DB) error {
 	return (*c).JSON(200, products)
 }
 
-func POST(c *echo.Context, db *bun.DB) error {
+func IndexPOST(c *echo.Context, db *bun.DB) error {
 	ctx := (*c).Request().Context()
 
 	product := models.Product{}

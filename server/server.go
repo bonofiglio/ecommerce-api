@@ -10,10 +10,10 @@ import (
 func initializeRoutes(app *echo.Echo, db *bun.DB) {
 	// products
 	app.GET("/products", func(context echo.Context) error {
-		return products.GET(&context, db)
+		return products.IndexGET(&context, db)
 	})
 	app.POST("/products", func(context echo.Context) error {
-		return products.POST(&context, db)
+		return products.IndexPOST(&context, db)
 	})
 }
 
