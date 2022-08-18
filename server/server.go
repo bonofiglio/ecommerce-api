@@ -2,28 +2,18 @@ package server
 
 import (
 	"ecommerceapi/server/routes/products"
+	"ecommerceapi/server/routes/users"
 
 	"github.com/labstack/echo/v4"
 	"github.com/uptrace/bun"
 )
 
 func initializeRoutes(app *echo.Echo, db *bun.DB) {
-	// products
-	app.GET("/products", func(context echo.Context) error {
-		return products.IndexGET(&context, db)
-	})
-	app.POST("/products", func(context echo.Context) error {
-		return products.IndexPOST(&context, db)
-	})
-	app.GET("/products/:id", func(context echo.Context) error {
-		return products.IdGET(&context, db)
-	})
-	app.PUT("/products/:id", func(context echo.Context) error {
-		return products.IdPUT(&context, db)
-	})
+	products.InitRoutes(app, db)
+	users.InitRoutes(app, db)
 }
 
-func InitializeServer(port *string, db *bun.DB) *echo.Echo {
+func Init(port *string, db *bun.DB) *echo.Echo {
 	// Create an instance of Echo
 	server := echo.New()
 

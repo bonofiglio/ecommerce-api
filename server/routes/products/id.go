@@ -7,7 +7,7 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func IdGET(c *echo.Context, db *bun.DB) error {
+func idGet(c *echo.Context, db *bun.DB) error {
 	ctx := (*c).Request().Context()
 	id := (*c).Param("id")
 
@@ -21,7 +21,7 @@ func IdGET(c *echo.Context, db *bun.DB) error {
 	return (*c).JSON(200, product)
 }
 
-func IdPUT(c *echo.Context, db *bun.DB) error {
+func idPut(c *echo.Context, db *bun.DB) error {
 	ctx := (*c).Request().Context()
 	id := (*c).Param("id")
 

@@ -6,3 +6,4 @@
 - `POSTGRES_DB`: Name of the database
 - `DATABASE_HOST`: Hostname where the database is hosted
 - `DATABASE_PORT`: Port where the database is hosted
+- `PASSWORD_PEPPER`: Sets the password pepper (secret) for hashing the passwords

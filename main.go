@@ -23,6 +23,7 @@ func initializeEnvironment() (port, dbUser, dbPassword, dbHost, dbPort, dbName s
 	dbName = os.Getenv("POSTGRES_DB")
 	dbHost = os.Getenv("DATABASE_HOST")
 	dbPort = os.Getenv("DATABASE_PORT")
+	passwordPepper := os.Getenv("PASSWORD_PEPPER")
 
 	if port == "" {
 		log.Fatalf("PORT must be set in .env file")
@@ -48,6 +49,10 @@ func initializeEnvironment() (port, dbUser, dbPassword, dbHost, dbPort, dbName s
 		log.Fatalf("DATABASE_PORT must be set in .env file")
 	}
 
+	if passwordPepper == "" {
+		log.Fatalf("PASSWORD_PEPPER must be set in .env file")
+	}
+
 	return port, dbUser, dbPassword, dbHost, dbPort, dbName
 }
 
@@ -56,5 +61,5 @@ func main() {
 	port, dbUser, dbPassword, dbHost, dbPort, dbName := initializeEnvironment()
 	postgreDb := db.InitializeDatabase(&dbUser, &dbPassword, &dbHost, &dbPort, &dbName, &ctx)
 
-	server.InitializeServer(&port, postgreDb)
+	server.Init(&port, postgreDb)
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func IndexGET(c *echo.Context, db *bun.DB) error {
+func get(c *echo.Context, db *bun.DB) error {
 	ctx := (*c).Request().Context()
 
 	products := make([]map[string]interface{}, 0)
@@ -21,7 +21,7 @@ func IndexGET(c *echo.Context, db *bun.DB) error {
 	return (*c).JSON(200, products)
 }
 
-func IndexPOST(c *echo.Context, db *bun.DB) error {
+func post(c *echo.Context, db *bun.DB) error {
 	ctx := (*c).Request().Context()
 
 	product := models.Product{}
@@ -52,4 +52,19 @@ func IndexPOST(c *echo.Context, db *bun.DB) error {
 	}
 
 	return (*c).JSON(200, product)
+}
+
+func InitRoutes(app *echo.Echo, db *bun.DB) {
+	(*app).GET("/products", func(c echo.Context) error {
+		return get(&c, db)
+	})
+	(*app).GET("/products", func(c echo.Context) error {
+		return post(&c, db)
+	})
+	(*app).GET("/products/:id", func(c echo.Context) error {
+		return idGet(&c, db)
+	})
+	(*app).PUT("/products", func(c echo.Context) error {
+		return idPut(&c, db)
+	})
 }
