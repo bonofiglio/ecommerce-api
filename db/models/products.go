@@ -11,5 +11,6 @@ type Product struct {
 	Name        string  `bun:"name,notnull" json:"name"`
 	Description string  `bun:"description" json:"description"`
 	Price       float64 `bun:"price,notnull" json:"price"`
+	Stock       int     `bun:"stock,notnull" json:"stock"`
 	Active      bool    `bun:"active,notnull" json:"active"`
 }
