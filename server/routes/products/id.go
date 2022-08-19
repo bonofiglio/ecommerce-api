@@ -2,6 +2,7 @@ package products
 
 import (
 	"ecommerceapi/db/models"
+	"ecommerceapi/lib"
 
 	"github.com/labstack/echo/v4"
 	"github.com/uptrace/bun"
@@ -12,10 +13,9 @@ func idGet(c *echo.Context, db *bun.DB) error {
 	id := (*c).Param("id")
 
 	product := models.Product{}
-	err := db.NewSelect().Model(&models.Product{}).Where("id = ?", id).Scan(ctx, &product)
 
-	if err != nil {
-		return echo.NewHTTPError(500, err.Error())
+	if err := db.NewSelect().Model(&models.Product{}).Where("id = ?", id).Scan(ctx, &product); err != nil {
+		return lib.CreateNewResponseError(500, err.Error())
 	}
 
 	return (*c).JSON(200, product)
@@ -30,32 +30,27 @@ func idPut(c *echo.Context, db *bun.DB) error {
 	count, err := query.Count(ctx)
 
 	if err != nil {
-		return echo.NewHTTPError(500, err.Error())
+		return lib.CreateNewResponseError(500, err.Error())
 	}
 
 	if count == 0 {
-		return echo.NewHTTPError(404, "Product not found")
+		return lib.CreateNewResponseError(404, "Product not found")
 	}
 
 	product := make(map[string]interface{})
-	err = (*c).Bind(&product)
 
-	if err != nil {
-		return echo.NewHTTPError(400, err.Error())
+	if err := (*c).Bind(&product); err != nil {
+		return lib.CreateNewResponseError(400, err.Error())
 	}
 
-	_, err = db.NewUpdate().Model(&product).TableExpr("products").Where("id = ?", id).Exec(ctx)
-
-	if err != nil {
-		return echo.NewHTTPError(500, err.Error())
+	if _, err := db.NewUpdate().Model(&product).TableExpr("products").Where("id = ?", id).Exec(ctx); err != nil {
+		return lib.CreateNewResponseError(500, err.Error())
 	}
 
 	finalProduct := models.Product{}
 
-	_, err = query.Exec(ctx, &finalProduct)
-
-	if err != nil {
-		return echo.NewHTTPError(500, err.Error())
+	if _, err := query.Exec(ctx, &finalProduct); err != nil {
+		return lib.CreateNewResponseError(500, err.Error())
 	}
 
 	return (*c).JSON(200, finalProduct)

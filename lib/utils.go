@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"math/rand"
 	"strings"
+
+	"github.com/labstack/echo/v4"
 )
 
 var base64Characters = []byte("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")
@@ -28,4 +30,10 @@ func PanicOnDbError(result sql.Result, err error) sql.Result {
 	}
 
 	return result
+}
+
+func CreateNewResponseError(status int, messages ...string) *echo.HTTPError {
+	return echo.NewHTTPError(status, map[string]interface{}{
+		"errors": messages,
+	})
 }

@@ -14,9 +14,8 @@ func get(c *echo.Context, db *bun.DB) error {
 	ctx := (*c).Request().Context()
 
 	users := []models.SafeUser{}
-	err := db.NewSelect().Model(&models.User{}).ExcludeColumn("password", "salt").Scan(ctx, &users)
 
-	if err != nil {
+	if err := db.NewSelect().Model(&models.User{}).ExcludeColumn("password", "salt").Scan(ctx, &users); err != nil {
 		log.Print(users)
 	}
 
@@ -27,10 +26,9 @@ func post(c *echo.Context, db *bun.DB) error {
 	ctx := (*c).Request().Context()
 
 	user := models.User{}
-	err := (*c).Bind(&user)
 
-	if err != nil {
-		return echo.NewHTTPError(400, err.Error())
+	if err := (*c).Bind(&user); err != nil {
+		return lib.CreateNewResponseError(400, err.Error())
 	}
 
 	// Unset forbidden fields from the request body in case they were sent in the request
@@ -40,22 +38,9 @@ func post(c *echo.Context, db *bun.DB) error {
 	user.Orders = []*models.Order{}
 	user.Active = true
 
-	// Check required fields
-	if user.Username == "" {
-		return echo.NewHTTPError(400, "username is required")
-	}
-	// TODO: Do email validation
-	if user.Email == "" {
-		return echo.NewHTTPError(400, "email is required")
-	}
-	if user.FirstName == "" {
-		return echo.NewHTTPError(400, "first_name is required")
-	}
-	if user.LastName == "" {
-		return echo.NewHTTPError(400, "last_name is required")
-	}
-	if user.Password == "" {
-		return echo.NewHTTPError(400, "password is required")
+	// Validate the request
+	if err := (*c).Validate(user); err != nil {
+		return err
 	}
 
 	// Generate a random salt to hash the password with
@@ -65,10 +50,8 @@ func post(c *echo.Context, db *bun.DB) error {
 	user.Password = lib.HashPassword(user.Password, user.Salt)
 
 	// Insert the user into the database
-	_, err = db.NewInsert().Model(&user).Exec(ctx)
-
-	if err != nil {
-		return echo.NewHTTPError(500, err.Error())
+	if _, err := db.NewInsert().Model(&user).Exec(ctx); err != nil {
+		return lib.CreateNewResponseError(500, err.Error())
 	}
 
 	// Extract the fields of the safe user from the user struct before returning it

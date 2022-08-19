@@ -27,6 +27,7 @@
   - [ ] Orders
   - [ ] Payment methods
 - [ ] Public API functionalities
+  - [x] Consistent error handling pattern
   - [x] Get products list
   - [ ] Get categories list
   - [x] Register new user
