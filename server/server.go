@@ -15,15 +15,7 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func initializeRoutes(app *echo.Echo, db *bun.DB) {
-	products.InitRoutes(app, db)
-	users.InitRoutes(app, db)
-}
-
-func Init(port *string, db *bun.DB) *echo.Echo {
-	// Create an instance of Echo
-	server := echo.New()
-
+func getValidator() *lib.RequestValidator {
 	// Create a new translator with english as the default language
 	en_locale := en.New()
 	universal_translator := ut.New(en_locale, en_locale)
@@ -44,8 +36,20 @@ func Init(port *string, db *bun.DB) *echo.Echo {
 		return name
 	})
 
+	return val
+}
+
+func initializeRoutes(app *echo.Echo, db *bun.DB) {
+	products.InitRoutes(app, db)
+	users.InitRoutes(app, db)
+}
+
+func Init(port *string, db *bun.DB) *echo.Echo {
+	// Create an instance of Echo
+	server := echo.New()
+
 	// Attach the custom validator to the echo instance
-	server.Validator = val
+	server.Validator = getValidator()
 
 	// Initialize the routes
 	initializeRoutes(server, db)
