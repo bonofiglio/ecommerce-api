@@ -60,11 +60,11 @@ func post(c *echo.Context, db *bun.DB) error {
 	return (*c).JSON(200, safeUser)
 }
 
-func InitRoutes(group *echo.Group, db *bun.DB) {
-	group.GET("/users", func(c echo.Context) error {
+func InitRoutes(app *echo.Echo, db *bun.DB) {
+	(*app).GET("/users", func(c echo.Context) error {
 		return get(&c, db)
 	})
-	group.POST("/users", func(c echo.Context) error {
+	(*app).POST("/users", func(c echo.Context) error {
 		return post(&c, db)
 	})
 }

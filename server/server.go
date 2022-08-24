@@ -2,9 +2,8 @@ package server
 
 import (
 	"ecommerceapi/lib"
-	privateProducts "ecommerceapi/server/routes/private/products"
-	"ecommerceapi/server/routes/private/users"
-	publicProducts "ecommerceapi/server/routes/public/products"
+	"ecommerceapi/server/routes/products"
+	"ecommerceapi/server/routes/users"
 	"reflect"
 	"strings"
 
@@ -41,16 +40,8 @@ func getValidator() *lib.RequestValidator {
 }
 
 func initializeRoutes(app *echo.Echo, db *bun.DB) {
-	// Create a group for all private routes
-	private := app.Group("/private")
-
-	privateProducts.InitRoutes(private, db)
-	users.InitRoutes(private, db)
-
-	// Create a group for all public routes
-	public := app.Group("/api")
-	publicProducts.InitRoutes(public, db)
-
+	products.InitRoutes(app, db)
+	users.InitRoutes(app, db)
 }
 
 func Init(port *string, db *bun.DB) *echo.Echo {

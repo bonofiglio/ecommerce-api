@@ -3,14 +3,22 @@ package products
 import (
 	"ecommerceapi/db/models"
 	"ecommerceapi/lib"
-	"net/http"
+	"log"
 
 	"github.com/labstack/echo/v4"
 	"github.com/uptrace/bun"
 )
 
 func get(c *echo.Context, db *bun.DB) error {
-	return (*c).Redirect(http.StatusMovedPermanently, "/api/products")
+	ctx := (*c).Request().Context()
+
+	products := make([]map[string]interface{}, 0)
+
+	if err := db.NewSelect().Model(&models.Product{}).Scan(ctx, &products); err != nil {
+		log.Print(err)
+	}
+
+	return (*c).JSON(200, products)
 }
 
 func post(c *echo.Context, db *bun.DB) error {
@@ -34,17 +42,17 @@ func post(c *echo.Context, db *bun.DB) error {
 	return (*c).JSON(200, product)
 }
 
-func InitRoutes(group *echo.Group, db *bun.DB) {
-	group.GET("/products", func(c echo.Context) error {
+func InitRoutes(app *echo.Echo, db *bun.DB) {
+	(*app).GET("/products", func(c echo.Context) error {
 		return get(&c, db)
 	})
-	group.POST("/products", func(c echo.Context) error {
+	(*app).POST("/products", func(c echo.Context) error {
 		return post(&c, db)
 	})
-	group.GET("/products/:id", func(c echo.Context) error {
+	(*app).GET("/products/:id", func(c echo.Context) error {
 		return idGet(&c, db)
 	})
-	group.PUT("/products", func(c echo.Context) error {
+	(*app).PUT("/products", func(c echo.Context) error {
 		return idPut(&c, db)
 	})
 }
