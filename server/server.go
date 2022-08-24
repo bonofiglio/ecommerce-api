@@ -39,7 +39,7 @@ func getValidator() *lib.RequestValidator {
 	return val
 }
 
-func initializeRoutes(app *echo.Echo, db *bun.DB) {
+func initRoutes(app *echo.Echo, db *bun.DB) {
 	products.InitRoutes(app, db)
 	users.InitRoutes(app, db)
 }
@@ -52,7 +52,7 @@ func Init(port *string, db *bun.DB) *echo.Echo {
 	server.Validator = getValidator()
 
 	// Initialize the routes
-	initializeRoutes(server, db)
+	initRoutes(server, db)
 
 	// Start the server
 	server.Logger.Fatal(server.Start(":" + *port))
