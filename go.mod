@@ -4,6 +4,8 @@ go 1.19
 
 require github.com/go-playground/validator v9.31.0+incompatible
 
+require github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
+
 require (
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect

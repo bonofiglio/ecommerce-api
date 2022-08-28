@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"math/rand"
 	"strings"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -36,4 +37,10 @@ func CreateNewResponseError(status int, messages ...string) *echo.HTTPError {
 	return echo.NewHTTPError(status, map[string]interface{}{
 		"errors": messages,
 	})
+}
+
+func CreateExpirationDate() time.Time {
+	const hoursInAWeek = 168
+
+	return time.Now().Add(time.Hour * hoursInAWeek)
 }

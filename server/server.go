@@ -2,7 +2,10 @@ package server
 
 import (
 	"ecommerceapi/lib"
+	"ecommerceapi/server/middleware"
 	"ecommerceapi/server/routes/products"
+	signin "ecommerceapi/server/routes/sign-in"
+	signup "ecommerceapi/server/routes/sign-up"
 	"ecommerceapi/server/routes/users"
 	"reflect"
 	"strings"
@@ -42,6 +45,12 @@ func getValidator() *lib.RequestValidator {
 func initRoutes(app *echo.Echo, db *bun.DB) {
 	products.InitRoutes(app, db)
 	users.InitRoutes(app, db)
+	signup.InitRoutes(app, db)
+	signin.InitRoutes(app, db)
+}
+
+func initMiddleware(app *echo.Echo) {
+	app.Use(middleware.JWT)
 }
 
 func Init(port *string, db *bun.DB) *echo.Echo {

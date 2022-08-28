@@ -9,6 +9,7 @@
 - `DATABASE_HOST`: Hostname where the database is hosted
 - `DATABASE_PORT`: Port where the database is hosted
 - `PASSWORD_PEPPER`: Sets the password pepper (secret) for hashing the passwords
+- `SIGNATURE`: Signature secret for JWT signing
 
 # Progress
 

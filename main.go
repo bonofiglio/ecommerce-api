@@ -24,6 +24,7 @@ func initializeEnvironment() (port, dbUser, dbPassword, dbHost, dbPort, dbName s
 	dbHost = os.Getenv("DATABASE_HOST")
 	dbPort = os.Getenv("DATABASE_PORT")
 	passwordPepper := os.Getenv("PASSWORD_PEPPER")
+	signature := os.Getenv("SIGNATURE")
 
 	if port == "" {
 		log.Fatalf("PORT must be set in .env file")
@@ -51,6 +52,10 @@ func initializeEnvironment() (port, dbUser, dbPassword, dbHost, dbPort, dbName s
 
 	if passwordPepper == "" {
 		log.Fatalf("PASSWORD_PEPPER must be set in .env file")
+	}
+
+	if signature == "" {
+		log.Fatalf("SIGNATURE must be set in .env file")
 	}
 
 	return port, dbUser, dbPassword, dbHost, dbPort, dbName
