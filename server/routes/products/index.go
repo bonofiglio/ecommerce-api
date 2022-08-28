@@ -52,7 +52,7 @@ func InitRoutes(app *echo.Echo, db *bun.DB) {
 	(*app).GET("/products/:id", func(c echo.Context) error {
 		return idGet(&c, db)
 	})
-	(*app).PUT("/products", func(c echo.Context) error {
+	(*app).PUT("/products/:id", func(c echo.Context) error {
 		return idPut(&c, db)
 	})
 }
