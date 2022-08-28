@@ -24,6 +24,7 @@ func post(c *echo.Context, db *bun.DB) error {
 	user.UpdatedAt = time.Time{}
 	user.Orders = []*models.Order{}
 	user.Active = true
+	user.Role = models.UserRoleStandard
 
 	// Validate the request
 	if err := (*c).Validate(user); err != nil {
