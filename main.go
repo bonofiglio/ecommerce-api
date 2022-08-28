@@ -25,6 +25,7 @@ func initializeEnvironment() (port, dbUser, dbPassword, dbHost, dbPort, dbName s
 	dbPort = os.Getenv("DATABASE_PORT")
 	passwordPepper := os.Getenv("PASSWORD_PEPPER")
 	signature := os.Getenv("SIGNATURE")
+	jwtCookieName := os.Getenv("JWT_COOKIE_NAME")
 
 	if port == "" {
 		log.Fatalf("PORT must be set in .env file")
@@ -56,6 +57,10 @@ func initializeEnvironment() (port, dbUser, dbPassword, dbHost, dbPort, dbName s
 
 	if signature == "" {
 		log.Fatalf("SIGNATURE must be set in .env file")
+	}
+
+	if jwtCookieName == "" {
+		os.Setenv("JWT_COOKIE_NAME", "token")
 	}
 
 	return port, dbUser, dbPassword, dbHost, dbPort, dbName

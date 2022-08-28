@@ -11,7 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var TokenCookieName = "token"
+var TokenCookieName = os.Getenv("JWT_COOKIE_NAME")
 var SigningMethod = jwt.SigningMethodHS256
 var signingKey = os.Getenv("Signature")
 
