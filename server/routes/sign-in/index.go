@@ -3,7 +3,6 @@ package signin
 import (
 	"ecommerceapi/db/models"
 	"ecommerceapi/lib"
-	"ecommerceapi/server/auth"
 
 	"github.com/labstack/echo/v4"
 	"github.com/uptrace/bun"
@@ -52,13 +51,13 @@ func post(c *echo.Context, db *bun.DB) error {
 
 	// Set the token cookie
 	expirationDate := lib.CreateExpirationDate()
-	tokenString, err := auth.CreateTokenString(user.ID, expirationDate)
+	tokenString, err := lib.CreateTokenString(user.ID, expirationDate)
 
 	if err != nil {
 		return lib.CreateNewResponseError(500, err.Error())
 	}
 
-	tokenCookie := auth.MapTokenToCookie(tokenString, expirationDate)
+	tokenCookie := lib.MapTokenToCookie(tokenString, expirationDate)
 	(*c).SetCookie(tokenCookie)
 
 	// Extract the fields of the safe user from the user struct before returning it
